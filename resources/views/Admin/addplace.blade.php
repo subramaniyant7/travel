@@ -30,32 +30,22 @@
                                     <div
                                         class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
                                         <input class="mdl-textfield__input" type="text" id="txtRoomNo"
-                                            name="place_name" required value="{{ $action == 'edit' ? $places[0]->place_name : '' }}">
+                                            name="place_name" required value="{{ $action == 'edit' ? $places[0]->place_name : '' }}" />
                                         <label class="mdl-textfield__label">Place Name </label>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 p-t-20">
-                                    <div
-                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
-                                        <input class="mdl-textfield__input readonly" type="text" id="list3" name="place_type_input"
-                                             autocomplete="off" required  value="{{ $action == 'edit' ? $places[0]->type_name : '' }}">
-                                        <input class="mdl-textfield__input" type="hidden" id="type_hidden_value" name="place_type"
-                                                     value="{{ $action == 'edit' ? $places[0]->place_type : '' }}" >
-                                        <input class="mdl-textfield__input" type="hidden" id="place_id" name="place_id"
-                                                     value="{{ $action == 'edit' ? $places[0]->place_id : 0 }}" >
-                                        <label for="list3" class="pull-right margin-0">
-                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                                        </label>
-                                        <label for="list3" class="mdl-textfield__label">Place Type</label>
-                                        <ul data-mdl-for="list3" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" >
-                                            @foreach ($types as $f_types)
-                                                <li class="mdl-menu__item type_id" data-val="{{ $f_types->type_id }}" >{{ $f_types->type_name }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
+                                <input value="{{ $action == 'edit' ? $places[0]->place_id : '' }}" class="mdl-textfield__input"
+                                    type="hidden" id="place_id" name="place_id" />
 
-
+                                @if($action == 'edit')
+                                    <div class="col-lg-12 p-t-20">
+										<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-8">
+											<input type="checkbox" id="switch-8" name="status" class="mdl-switch__input"
+                                                 {{ $places[0]->status == 1 ? 'checked' : '' }} >
+											<span class="mdl-switch__label">Status</span>
+										</label>
+									</div>
+                                @endif
                                 <div class="col-lg-12 p-t-20 text-center">
                                     <button type="submit" id="place_submit"
                                         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>

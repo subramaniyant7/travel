@@ -10,6 +10,12 @@ use Illuminate\Support\Carbon;
 
 class Admincontroller extends Controller
 {
+
+    public function login(Request $request){
+       if($request->session()->get('admin_name')) return redirect('/bookingadmin/dashboard');
+        return view('admin.login');
+    }
+
     public function isValidate(Request $request){
         $formData = $request->input();
         $isAuthenticate = DB::table('admin')->select('id','admin_name')

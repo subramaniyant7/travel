@@ -19,7 +19,16 @@
                             </ol>
                         </div>
                     </div>
-
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-topline-red">
@@ -73,13 +82,17 @@
                                                 <td> {{ $flights_detail->startpoint}} </td>
                                                 <td> {{ $flights_detail->endpoint}} </td>
                                                 <td> {{ $flights_detail->type_name}} </td>
-                                                <td> {{ $flights_detail->flight_image}} </td>
-                                                <td> {{ $flights_detail->flight_date}} </td>
+                                                <td>
+                                                    <img style="width:20%"
+                                                        src="{{ URL:: asset('uploads/flights/').'/'.$flights_detail->flight_image }}" alt="Flight Image" />
+                                                    <!-- <img arv>{{ $flights_detail->flight_image}}  -->
+                                                </td>
+                                                <td> {{ getFormatedDate($flights_detail->flight_date) }} </td>
                                                 <td> {{ $flights_detail->flight_pnr}} </td>
                                                 <td> {{ $flights_detail->flight_no_of_ticket}} </td>
 
                                                 <td>
-                                                    @if($flights_detail->status)
+                                                    @if($flights_detail->status == 1)
                                                         <span class="label label-sm label-success">Active</span>
                                                     @else
                                                         <span class="label label-sm label-danger">De-Active</span>
@@ -95,23 +108,14 @@
                                                             <i class="fa fa-angle-down"></i>
                                                         </button>
                                                         <ul class="dropdown-menu pull-left" role="menu">
-                                                            <li>
-                                                                <a href="javascript:;">
-                                                                    <i class="icon-docs"></i> New Post </a>
+                                                        <li>
+                                                                <a href="{{ url('/bookingadmin/edit_flight/'.$flights_detail->flight_id) }}">
+                                                                    <i class="icon-pencil"></i> Edit Flight
+                                                                </a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:;">
-                                                                    <i class="icon-tag"></i> New Comment </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;">
-                                                                    <i class="icon-user"></i> New User </a>
-                                                            </li>
-                                                            <li class="divider"> </li>
-                                                            <li>
-                                                                <a href="javascript:;">
-                                                                    <i class="icon-flag"></i> Comments
-                                                                    <span class="badge badge-success">4</span>
+                                                                <a href="{{ url('/bookingadmin/delete_flight/'.$flights_detail->flight_id) }}">
+                                                                    <i class="icon-trash"></i> Delete Flight
                                                                 </a>
                                                             </li>
                                                         </ul>

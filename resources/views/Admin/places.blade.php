@@ -19,9 +19,14 @@
                             </ol>
                         </div>
                     </div>
-                    @if(session()->has('message.level'))
-                        <div class="alert alert-{{ session('message.level') }}">
-                        {!! session('message.content') !!}
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
                         </div>
                     @endif
                     <div class="row">
@@ -51,7 +56,6 @@
                                                     </label>
                                                 </th>
                                                 <th> Place Name </th>
-                                                <th> Place Type </th>
                                                 <th> Status</th>
                                                 <th> Action </th>
                                             </tr>
@@ -66,9 +70,8 @@
                                                     </label>
                                                 </td>
                                                 <td> {{ $places_detail->place_name}} </td>
-                                                <td> {{ $places_detail->type_name}} </td>
                                                 <td>
-                                                    @if($places_detail->status)
+                                                    @if($places_detail->status == 1)
                                                         <span class="label label-sm label-success">Active</span>
                                                     @else
                                                         <span class="label label-sm label-danger">De-Active</span>
@@ -86,11 +89,13 @@
                                                         <ul class="dropdown-menu pull-left" role="menu">
                                                             <li>
                                                                 <a href="{{ url('/bookingadmin/edit_place/'.$places_detail->place_id) }}">
-                                                                    <i class="icon-pencil"></i> Edit Place </a>
+                                                                    <i class="icon-pencil"></i> Edit Place
+                                                                </a>
                                                             </li>
                                                             <li>
                                                                 <a href="{{ url('/bookingadmin/delete_place/'.$places_detail->place_id) }}">
-                                                                    <i class="icon-trash"></i> Delete Place </a>
+                                                                    <i class="icon-trash"></i> Delete Place
+                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>

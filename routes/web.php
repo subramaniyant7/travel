@@ -18,14 +18,18 @@ Route::get('/trips', function () { return view('trips'); });
 Route::get('/flights', function () { return view('flights'); });
 Route::get('/', function () { return view('home'); });
 
+
+
+
 Route::prefix('/bookingadmin')->namespace('Admin')->group(function(){
-    Route::get('/', function(){ return view('admin/login'); });
+    Route::get('/', [Admincontroller::class, 'login']);
     Route::post('/validate', [Admincontroller::class, 'isValidate']);
     Route::middleware(['adminauth'])->group(function () {
         Route::get('/dashboard', [Admincontroller::class, 'dashboard']);
         Route::get('/flights', [Flightcontroller::class, 'flights']);
-        Route::post('/loadplace', [Flightcontroller::class, 'loadPlace']);
         Route::get('/add_flight', [Flightcontroller::class, 'addFlight']);
+        Route::get('/edit_flight/{id}', [Flightcontroller::class, 'editFlight']);
+        Route::get('/delete_flight/{id}',[Flightcontroller::class, 'deleteFlight']);
         Route::post('/saveflight', [Flightcontroller::class, 'saveFlight']);
         Route::get('/places', [Placecontroller::class, 'places']);
         Route::get('/add_place',[Placecontroller::class, 'addPlace']);
@@ -35,5 +39,11 @@ Route::prefix('/bookingadmin')->namespace('Admin')->group(function(){
         Route::get('/logout', [Admincontroller::class, 'logout']);
     });
 
+    Route::fallback(function () { return view('errors.404_admin'); });
 });
+
+
+Route::fallback(function () { return view('errors.404'); });
+
+
 
