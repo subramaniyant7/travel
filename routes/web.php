@@ -5,18 +5,34 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Admin\Admincontroller;
 use App\Http\Controllers\Admin\Placecontroller;
 use App\Http\Controllers\Admin\Flightcontroller;
+use App\Http\Controllers\PaymentController;
 
 
 
-Route::get('/registration', function () { return view('register'); });
+Route::get('/registration', [GlobalController::class, 'register']);
 Route::get('/login', [GlobalController::class, 'login']);
+Route::post('/load_state', [GlobalController::class, 'loadState']);
+Route::post('/load_city', [GlobalController::class, 'loadCity']);
+Route::post('/email_validate', [GlobalController::class, 'emailValidate']);
+Route::post('/create_user', [GlobalController::class, 'createUser']);
 Route::post('/validate', [GlobalController::class, 'userValidate']);
 Route::get('/logout', [GlobalController::class, 'logout']);
-Route::get('/search', function () { return view('search'); });
+Route::get('/flightsearch', [GlobalController::class, 'flightSearch']);
 Route::post('/booking', [GlobalController::class, 'booking']);
+Route::post('/flight_payment', [GlobalController::class, 'flightPayment']);
 Route::get('/trips', function () { return view('trips'); });
-Route::get('/flights', function () { return view('flights'); });
-Route::get('/', function () { return view('home'); });
+Route::get('/flights', [GlobalController::class, 'flights']);
+Route::get('/', [GlobalController::class, 'home']);
+
+Route::get('/payment-initiate',function(){
+    return view('payment-initiate');
+});
+
+// for Initiate the order
+Route::post('/payment-initiate-request',[PaymentController::class, 'Initiate'] );
+
+// for Payment complete
+Route::post('/payment-complete',[PaymentController::class, 'Complete']);
 
 
 

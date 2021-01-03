@@ -7,6 +7,7 @@
             <meta name="viewport" content="width=device-width,initial-scale=1">
             <meta name="keywords" content="#">
             <meta name="description" content="#">
+            <meta name="csrf-token" content="{{ csrf_token() }}" />
             <title>Toor - Travel Booking HTML5 Template | Homepage</title>
             <!-- Fav and touch icons -->
             <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ URL:: asset('images/favicon.ico') }}">
@@ -34,6 +35,7 @@
             <link href="{{ URL:: asset('css/style.css') }}" rel="stylesheet">
             <!-- Custom Responsive -->
             <link href="{{ URL:: asset('css/responsive.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="{{ URL:: asset('admin/plugins/jquery-toast/dist/jquery.toast.min.css') }}">
             <!-- Google Fonts -->
             <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&amp;display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
@@ -74,9 +76,15 @@
                         <div class="col-sm-6">
                             <div class="right-side">
                                 <ul class="custom-flex">
-                                @if(Session::has('u_name'))
+                                @if(Session::has('travel_uid'))
+                                    @php
+                                        $userInfo = getUserInfo(Session::get('travel_uid'))
+                                    @endphp
                                     <li>
-                                        <a href="#" class="text-custom-white"> Welcome {{ Session::get('u_name')}}</a>
+                                        <a href="#" class="text-custom-white"> Welcome {{ $userInfo[0]->user_fname.' '.$userInfo[0]->user_lname }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('/myaccount') }}" class="text-custom-white">My Account</a>
                                     </li>
                                     <li>
                                         <a href="{{ url('/logout') }}" class="text-custom-white">Logout</a>

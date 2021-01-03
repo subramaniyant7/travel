@@ -141,6 +141,9 @@
     <script src="{{ URL:: asset('js/ion.rangeSlider.min.js') }}"></script>
     <!-- Slick Slider -->
     <script src="{{ URL:: asset('js/slick.min.js') }}"></script>
+    	<!-- notifications -->
+	<script src="{{ URL:: asset('admin/plugins/jquery-toast/dist/jquery.toast.min.js') }}"></script>
+	<script src="{{ URL:: asset('admin/plugins/jquery-toast/dist/toast.js') }}"></script>
     <!-- Datepicker -->
     <script src="{{ URL:: asset('js/datepicker.js') }}"></script>
     <script src="{{ URL:: asset('js/datepicker.en.js') }}"></script>
@@ -154,6 +157,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnd9JwZvXty-1gHZihMoFhJtCXmHfeRQg"></script>
     <!-- Custom Js -->
     <script src="{{ URL:: asset('js/custom.js') }}"></script>
+    <script src="{{ URL:: asset('js/customize.js') }}"></script>
     <!-- /Place all Scripts Here -->
 
     </body>

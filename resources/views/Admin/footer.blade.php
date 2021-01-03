@@ -44,6 +44,9 @@
 	<script src="{{ URL::asset('admin/js/pages/datetime/datetime-data.js')}}"></script>
 
 
+	<script src="{{ URL::asset('admin/plugins/sweet-alert/sweetalert.min.js') }}"></script>
+	<script src="{{ URL::asset('admin/js/pages/sweet-alert/sweet-alert-data.js') }}"></script>
+
     <!-- end js include path -->
 </body>
 

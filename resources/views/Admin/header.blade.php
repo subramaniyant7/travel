@@ -38,6 +38,8 @@
 	<!-- Date Time item CSS -->
 	<link rel="stylesheet" href="{{ URL::asset('admin/plugins/flatpicker/flatpickr.min.css') }}">
 
+    <link rel="stylesheet" href="{{ URL::asset('admin/plugins/sweet-alert/sweetalert.min.css') }}">
+
 
 </head>
 <!-- END HEAD -->

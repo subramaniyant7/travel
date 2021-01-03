@@ -35,6 +35,23 @@ $(document).on('click', '.to_id', function(e) {
     $('#to_type_hidden').val($(this).attr('data-val'));
 });
 
+function showAjaxLoaderMessage() {
+    swal({
+        title: "An input!",
+        type: "button",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: "Write something"
+    }, function (inputValue) {
+        if (inputValue === false) return false;
+        if (inputValue === "") {
+            swal.showInputError("You need to write something!"); return false
+        }
+        swal("Nice!", "You wrote: " + inputValue, "success");
+    });
+}
+
 
 
 
