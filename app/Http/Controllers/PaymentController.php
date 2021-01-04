@@ -17,6 +17,11 @@ class PaymentController extends Controller
         // Generate random receipt id
         $receiptId = Str::random(20);
 
+
+        echo '<pre>';
+        print_r($request->input());
+        exit;
+
         // Create an object of razorpay
         $api = new Api($this->razorpayId, $this->razorpayKey);
 
@@ -42,9 +47,9 @@ class PaymentController extends Controller
             'flightId' => $request->input('load_flight_id'),
             'total' => $request->input('load_price'),
             'totalQty'=> $totalQty,
-            'adultQty'=> $request->input('load_flight_adult_qty'),
-            'kidsQty'=> $request->input('load_flight_kids_qty'),
-            'infantQty'=> $request->input('load_flight_infants_qty'),
+            'adultQty'=> ($request->input('load_flight_adult_qty')>0) ? $request->input('load_flight_adult_qty') : 0,
+            'kidsQty'=> ($request->input('load_flight_kids_qty')>0) ? $request->input('load_flight_kids_qty') : 0,
+            'infantQty'=> ($request->input('load_flight_infants_qty')>0) ? $request->input('load_flight_infants_qty') :0,
         ];
 
         // Let's checkout payment page is it working
@@ -65,16 +70,16 @@ class PaymentController extends Controller
         if($signatureStatus == true)
         {
             // You can create this page
-            $bookingData =  ['user_id'=>$request->input('uid'),'flight_id'=>$request->input('flightId')];
-            $createOrder = insertData('booking',$bookingData);
+            $orderId = (getCount('flight_booking') == 0) ? 100001 : 100000 + getCount('flight_booking');
+            $bookingData =  ['user_id'=>$request->input('userId'),'flight_id'=>$request->input('flightId'),'booking_order_id'=>$orderId];
+            $createOrder = insertData('flight_booking',$bookingData);
             $bookingDetails = ['booking_id'=>$createOrder,'cost'=>$request->input('total'),
                                 'no_of_persons'=>$request->input('totalQty'),'adult'=>$request->input('adultQty'),
                                 'kids'=>$request->input('kidsQty'),'infant'=>$request->input('infantQty'),
                                 'rzp_signature'=>$request->input('rzp_signature'),'rzp_paymentid'=>$request->input('rzp_paymentid'),
-                                'rzp_orderid'=>$request->input('rzp_orderid')
-                            ];
+                                'rzp_orderid'=>$request->input('rzp_orderid') ];
             $createOrderDetails = insertData('booking_details',$bookingDetails);
-            return view('payment-success-page',['response'=>$request->all()]);
+            return view('payment-success-page',['response'=>$request->all(),'orderId'=>$orderId]);
         }
         else{
             // You can create this page

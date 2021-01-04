@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <body>
+        <div id="loader" class="center"></div>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,9 +42,11 @@
             <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
 
         </head>
+
         <!-- Start Header -->
         <header class="header">
             <!-- Topbar -->
+
             <div class="topbar bg-custom-blue">
                 <div class="container">
                     <div class="row">

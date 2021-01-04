@@ -46,9 +46,10 @@ function getFlighSearch($from = '', $to='',$date=''){
     return $flights;
 }
 
-function getFlightDetails($flightId = ''){
+function getFlightDetails($flightId = '',$date = false){
     $filter = '';
     if($flightId != '') $filter = 'and a.flight_id="'.$flightId.'"';
+    if($date) $filter = $filter.' and a.flight_date >= "'.date('Y-m-d').'" ';
     $flights = DB::select('Select a.*, b.type_name, (SELECT place_name FROM places
                         WHERE place_id = a.flight_from) AS startpoint, (SELECT place_name FROM places WHERE place_id = a.flight_to) AS endpoint
                         from flight_details a, flight_types b where a.flight_type=b.type_id '.$filter.'');
@@ -59,9 +60,13 @@ function getAddFlightData(){
     return ['types'=> getFlightTypes(),'places'=>getAllPlaces()];
 }
 
+function getCount($table){
+    return DB::table($table)->count();
+}
+
 function insertData($table,$data){
     $data['status'] = 1;
-    $data['created_on'] = Carbon::now();
+    $data['created_on'] = date('Y-m-d h:i:s', time());
     try{
         return DB::table($table)->insertGetId($data);
     }catch(Exception $e){

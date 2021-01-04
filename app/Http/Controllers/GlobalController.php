@@ -51,16 +51,8 @@ class GlobalController extends Controller
         $to = $req->input('to');
         $depart = dbFormatedDate($req->input('depart'));
         $filteredFlights = getFlighSearch($from,$to,$depart);
-        // $totalTickets = $req->input('adults') + $req->input('kids') + $req->input('infants');
-        // $filteredFlights['ticket'] = ($filteredFlights[0]->flight_no_of_ticket >= $totalTickets) ? true : false;
-
-        // echo '<pre>';
-        // print_r(seatAvailablity($filteredFlights[0]->flight_id,1000));
-        // print_r( $req->all());
-        // print_r($filteredFlights);
-        // exit;
-
-        return view('flightsearch',['flights'=>$filteredFlights]);
+        $totalTickets = $req->input('adults') + $req->input('kids') + $req->input('infants');
+        return view('flightsearch',['flights'=>$filteredFlights,'totalTickets'=>$totalTickets]);
     }
 
 
@@ -78,7 +70,7 @@ class GlobalController extends Controller
     }
 
     public function flights(){
-        $result = getFlightDetails();
+        $result = getFlightDetails('',true);
         return view('flights',['flights' => $result]);
     }
 
@@ -118,13 +110,16 @@ class GlobalController extends Controller
         if($request->session()->get('travel_uid')){
             $data = $request->except(['_token']);
             $userData = json_decode(json_encode(getUserAddress($request->session()->get('travel_uid'))), true);
-            $flightDetails = json_decode(json_encode(getFlightDetails($data['flight_id'])), true);
+            $flightDetails = json_decode(json_encode(getFlightDetails($data['flight_id'],true)), true);
             $result = array_merge($data ,$flightDetails[0],$userData[0]);
             $adultPrice = $result['flight_adult'] * $result['flight_adult_price'];
             $kidsPrice = ($result['flight_kids'] > 0 ) ? $result['flight_kids'] * $result['flight_kids_price'] : 0;
             $infantPrice = ($result['flight_infants'] > 0 ) ?  $result['flight_infants'] * $result['flight_infant_price'] : 0 ;
             $totalPrice = $adultPrice + $kidsPrice + $infantPrice;
             $result['price'] = $totalPrice;
+            // echo '<pre>';
+            // print_r($result);
+            // exit;
             return view('bookingconfirmation',['flight'=>$result]);
         }
         return redirect('/login');

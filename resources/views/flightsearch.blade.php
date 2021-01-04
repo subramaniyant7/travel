@@ -40,6 +40,7 @@
                                                             {{ $flights_details->startpoint }} to {{ $flights_details->endpoint }}
                                                         </a>
                                                         <span class="text-light-dark">{{ $flights_details->flight_name}}</span>
+                                                        <span class="text-light-dark">Departure : {{ getFormatedDate($flights_details->flight_date) }}</span>
                                                     </h4>
                                                 </div>
                                             </div>
@@ -58,13 +59,10 @@
                                                 <input type="hidden" name="flight_adult" value="{{ request()->get('adults') }}">
                                                 <input type="hidden" name="flight_kids" value="{{ request()->get('kids') }}">
                                                 <input type="hidden" name="flight_infants" value="{{ request()->get('infants') }}">
-                                                @if(seatAvailablity($flights_details->flight_id,$flights_details->flight_no_of_ticket))
+                                                @if(count(seatAvailablity($flights_details->flight_id,$totalTickets))==0)
                                                     <button type="button">Only {{ $flights_details->flight_no_of_ticket }} seats available</button>
                                                 @else
-                                                    <button class="btn-first btn-submit" type="submit"
-                                                        href="{{ url('/flight_details/'.$flights_details->flight_id) }}" >
-                                                        Book
-                                                    </button>
+                                                    <button class="btn-first btn-submit" type="submit"> Book </button>
                                                 @endif
                                             </form>
                                         </div>

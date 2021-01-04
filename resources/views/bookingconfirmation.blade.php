@@ -1,5 +1,18 @@
 @extends('Common.layout')
 
+<style>
+table th, table td {
+    padding: 2px !important;
+    text-align: center;
+}
+thead tr { border: 1px solid #eee; }
+tr { height:45px; }
+table { border: none !important;}
+.remove { cursor: pointer; color :#ff0000;}
+.addpassenger { display:block;cursor:pointer;color:blue;float:right; }
+.input{ border: navajowhite; border-bottom: 2px solid #eee;}
+
+</style>
 @section('content')
     <!-- Start Blog -->
     <section class="section-padding bg-light-white booking-form">
@@ -50,23 +63,127 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6">
+                                                    <div class="col-12">
+                                                        <h5 class="text-custom-black">Add Passenger Details</h5>
+                                                    </div>
+
+                                                    <div class="col-12">
+
+                                                            <table id="passenger_table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> Name </th>
+                                                                        <th> Age </th>
+                                                                        <th> Sex </th>
+                                                                        <th> Type </th>
+                                                                        <th> Remove </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @for($i=1;$i<=$flight['flight_adult'];$i++)
+                                                                        <tr>
+                                                                            <th>
+                                                                                <input id="name" class="input" name="p_name[]" id="p_name" type="text" value=""/>
+                                                                            </th>
+                                                                            <td>
+                                                                                <input id="age" class="input" name="p_age[]" id="p_age" type="text" value=""/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <select name="p_sex">
+                                                                                    <option value="">select</option>
+                                                                                    <option value="1" >Male</option>
+                                                                                    <option value="2" >Female</option>
+                                                                                    <option value="3" >Other</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td>
+                                                                                <select name="p_type">
+                                                                                    <option value="A" selected >Adult</option>
+                                                                                    <option value="K" >Kids</option>
+                                                                                    <option value="I">Infant</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class="remove"> x </td>
+                                                                        </tr>
+                                                                    @endfor
+                                                                    @if($flight['flight_kids']>0)
+                                                                        @for($i=1;$i<=$flight['flight_kids'];$i++)
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <input id="name" class="input" name="p_name[]" id="p_name" type="text" />
+                                                                                </th>
+                                                                                <td>
+                                                                                    <input id="age" class="input" name="p_age[]" id="p_age" type="text" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <select name="p_sex">
+                                                                                        <option value="">select</option>
+                                                                                        <option value="1" >Male</option>
+                                                                                        <option value="2" >Female</option>
+                                                                                        <option value="3" >Other</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <select name="p_type">
+                                                                                        <option value="A" >Adult</option>
+                                                                                        <option value="K" selected>Kids</option>
+                                                                                        <option value="I">Infant</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td class="remove"> x </td>
+                                                                            </tr>
+                                                                        @endfor
+                                                                    @endif
+                                                                    @if($flight['flight_infants']>0)
+                                                                        @for($i=1;$i<=$flight['flight_infants'];$i++)
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <input id="name" class="input" name="p_name[]" id="p_name" type="text" />
+                                                                                </th>
+                                                                                <td>
+                                                                                    <input id="age" class="input" name="p_age[]" id="p_age" type="text" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <select name="p_sex">
+                                                                                        <option value="">select</option>
+                                                                                        <option value="1" >Male</option>
+                                                                                        <option value="2" >Female</option>
+                                                                                        <option value="3" >Other</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <select name="p_type">
+                                                                                        <option value="A" >Adult</option>
+                                                                                        <option value="K" >Kids</option>
+                                                                                        <option value="I" selected>Infant</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td class="remove"> x </td>
+                                                                            </tr>
+                                                                        @endfor
+                                                                    @endif
+                                                                </tbody>
+                                                            </table>
+
+                                                    </div>
+
+                                                    <div class="col-md-6" style="display:none">
                                                         <div class="form-group">
                                                             <label class="fs-14 text-custom-black fw-500">Adult</label>
-                                                            <input type="text" name="flight_adult" class="form-control form-control-custom"
+                                                            <input type="text" name="flight_adult[]" id="flight_adult" class="form-control form-control-custom"
                                                                 value="{{ $flight['flight_adult']}}" onblur="quotePriceUpdate()" />
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" style="display:none">
                                                         <div class="form-group">
                                                             <label class="fs-14 text-custom-black fw-500">Kids</label>
-                                                            <input type="text" name="flight_kids" class="form-control form-control-custom"
+                                                            <input type="text" name="flight_kids[]" id="flight_kids" class="form-control form-control-custom"
                                                                 value="{{ $flight['flight_kids']}}" onblur="quotePriceUpdate()" />
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" style="display:none">
                                                         <div class="form-group">
                                                             <label class="fs-14 text-custom-black fw-500">Infant</label>
                                                             <input type="text" name="flight_infants" class="form-control form-control-custom"
@@ -76,8 +193,11 @@
 
                                                     <div class="col-12">
                                                         <hr class="mt-0">
+                                                        <span class="addpassenger"> + Add Passenger</span>
                                                         <button type="submit" id="flight_booking" class="btn-first btn-submit">Confirm Booking</button>
+
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">

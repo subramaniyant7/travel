@@ -45,11 +45,33 @@ $("#flight_search").on("click",function(e){
 $('#flight_booking').on('click',function(e){
     e.preventDefault();
     let noError = true;
-    let adult = $('input[name=flight_adult]').val();
-    if(adult =='' || adult < 0){
-        notify('Please Enter Adult Details');
+    // let adult = $('input[name=flight_adult]').val();
+    // if(adult =='' || adult < 0){
+    //     notify('Please Enter Adult Details');
+    // }
+    let total = $("#passenger_table tbody").find('tr').length;
+    let adult = kids= infant = 0;
+
+    $("#passenger_table tbody").find('tr').each(function(){
+        if($(this).find('#p_name').val()==''){ noError = false; }
+        if($(this).find('#p_age').val()==''){ noError = false; }
+        if($(this).find('select[name=p_sex]').val()==''){ noError = false; }
+        if($(this).find('select[name=p_type]').val()==''){ noError = false; }
+        if($(this).find('select[name=p_type]').val()=='A'){ adult++; }
+        if($(this).find('select[name=p_type]').val()=='K'){ kids++; }
+        if($(this).find('select[name=p_type]').val()=='I'){ infant++; }
+    });
+    if(noError) {
+        $('input[name=load_flight_adult_qty]').val(adult);
+        $('input[name=load_flight_kids_qty]').val(kids);
+        $('input[name=load_flight_infants_qty]').val(infant);
+        $('#booking_form').submit();
     }
-    if(noError) $('#booking_form').submit();
+    else notify('Please enter passenger details');
+
+    // document.querySelector("body").style.visibility = "hidden";
+    // $("#loader").show();
+
 });
 
 const quotePriceUpdate = () => {
@@ -84,8 +106,55 @@ const quotePriceUpdate = () => {
         notify('Please Enter Adult Details');
         $('#flight_booking').prop('disabled',true);
     }
-
 }
+
+
+$('.addpassenger').on('click',function(){
+    let html = '<tr><th><input id="name" class="input" name="p_name" type="text" /></th><td><input id="age" class="input" name="p_age" type="text" /></td>';
+    html += '<td><select name="p_sex"><option value="">select</option><option value="1" >Male</option><option value="2" >Female</option><option value="3" >Other</option></select></td>';
+    html += '<td><select name="p_type"><option value="A" selected >Adult</option><option value="K" >Kids</option><option value="I">Infant</option></select></td>';
+    html += '<td class="remove"> x </td></tr>'
+    $('#passenger_table > tbody:last-child').append(html);
+});
+
+$(document).on("click",".remove",function() {
+    let row = $('#passenger_table >tbody >tr').length;
+    if(row > 1) {
+        $(this).closest('tr').remove();
+        $('.kids_price').hide();
+        $('.infant_price').hide();
+        let adultCount = kidsCount = infantCount = 0;
+        let kidsPrice = infantPrice = totalPrice = adultPrice =  0;
+        $("#passenger_table tbody").find('tr').each(function(){
+            if($(this).find('select[name=p_type]').val()=='A'){ adultCount++; }
+            if($(this).find('select[name=p_type]').val()=='K'){ kidsCount++; }
+            if($(this).find('select[name=p_type]').val()=='I'){ infantCount++; }
+        });
+        let actualAdultPrice = $('input[name=load_flight_adult_price]').val();
+        let actulaKidsPrice = $('input[name=load_flight_kids_price]').val();
+        let actulaInfantPrice = $('input[name=load_flight_infant_price]').val();
+        $('.adult_price').show().find('span').eq(1).html(adultCount+'x'+actualAdultPrice);
+        adultPrice = adultCount * actualAdultPrice ;
+        $('input[name=load_flight_adult_qty]').val(adultCount);
+        if(kidsCount > 0 ) {
+            kidsPrice = kidsCount * actulaKidsPrice ;
+            $('.kids_price').show().find('span').eq(1).html(kidsCount+'x'+actulaKidsPrice);
+            $('input[name=load_flight_kids_qty]').val(kidsCount);
+        }
+        if(infantCount > 0 ) {
+            infantPrice = infantCount * actulaInfantPrice ;
+            $('.infant_price').show().find('span').eq(1).html(infantCount+'x'+actulaInfantPrice);
+            $('input[name=load_flight_infants_qty]').val(infantCount);
+        }
+        totalPrice = parseInt(adultPrice) + parseInt(kidsPrice) + parseInt(infantPrice);
+        $('.total_price').find('span').eq(1).html('$'+totalPrice);
+
+        $('input[name=load_price]').val(totalPrice);
+    }
+    else notify('Atleast one passenger needed');
+
+
+});
 
 const emailValidate = (email) => {
     $.post("/email_validate", { 'email' : email } ,function(res, status){
@@ -127,5 +196,15 @@ const getCity = (val) =>{
     });
 }
 
-const notify = (msg) => { $.toast({ text: msg, position: 'top-right', icon: 'error',
+const notify = (msg) => { $.toast().reset('all'); $.toast({ text: msg, position: 'top-right', icon: 'error',
 showHideTransition: 'slide',  hideAfter: 8000,  stack: 20, loader: !1, }); }
+
+document.onreadystatechange = function() {
+    if (document.readyState !== "complete") {
+        document.querySelector("body").style.visibility = "hidden";
+        document.querySelector("#loader").style.visibility = "visible";
+    } else {
+        document.querySelector("#loader").style.display = "none";
+        document.querySelector("body").style.visibility = "visible";
+    }
+};

@@ -8,7 +8,10 @@
                 <div class="section-heading">
                     <h3 class="text-custom-black">Flight Booked Successfully</h3>
                     <div class="section-description">
-                    <p class="text-light-dark">Click here to download ticket</p>
+                    <p class="text-light-dark">
+                        Your Booking Order Id: {{ $orderId }}
+                        <br>Click here to download ticket
+                    </p>
                     </div>
                 </div>
             </div>

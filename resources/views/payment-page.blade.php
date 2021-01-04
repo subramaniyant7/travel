@@ -41,16 +41,16 @@ document.getElementById('rzp-button1').onclick = function(e){
 
 <!-- This form is hidden -->
 <form action="{{url('/payment-complete')}}" method="POST" hidden>
-        <input type="hidden" value="{{csrf_token()}}" name="_token" />
-        <input type="text" class="form-control" id="rzp_paymentid"  name="rzp_paymentid">
-        <input type="text" class="form-control" id="rzp_orderid" name="rzp_orderid">
-        <input type="text" class="form-control" id="rzp_signature" name="rzp_signature">
-        <input type="text" class="form-control" id="uid" name="userId" value="{{ $response['uid'] }}">
-        <input type="text" class="form-control" id="flightid" name="flightId" value="{{ $response['flightId'] }}">
-        <input type="text" class="form-control" id="total" name="total" value="{{ $response['total'] }}">
-        <input type="text" class="form-control" id="totalqty" name="totalQty" value="{{ $response['totalQty'] }}">
-        <input type="text" class="form-control" id="totalqty" name="adultQty" value="{{ $response['adultQty'] }}">
-        <input type="text" class="form-control" id="totalqty" name="kidsQty" value="{{ $response['kidsQty'] }}">
-        <input type="text" class="form-control" id="totalqty" name="infantQty" value="{{ $response['infantQty'] }}">
+    <input type="hidden" value="{{csrf_token()}}" name="_token" />
+    <input type="text" class="form-control" id="rzp_paymentid"  name="rzp_paymentid">
+    <input type="text" class="form-control" id="rzp_orderid" name="rzp_orderid">
+    <input type="text" class="form-control" id="rzp_signature" name="rzp_signature">
+    <input type="text" class="form-control" id="uid" name="userId" value="{{ $response['uid'] }}">
+    <input type="text" class="form-control" id="flightid" name="flightId" value="{{ $response['flightId'] }}">
+    <input type="text" class="form-control" id="total" name="total" value="{{ $response['total'] }}">
+    <input type="text" class="form-control" id="totalqty" name="totalQty" value="{{ $response['totalQty'] }}">
+    <input type="text" class="form-control" id="totalqty" name="adultQty" value="{{ $response['adultQty'] }}">
+    <input type="text" class="form-control" id="totalqty" name="kidsQty" value="{{ $response['kidsQty'] }}">
+    <input type="text" class="form-control" id="totalqty" name="infantQty" value="{{ $response['infantQty'] }}">
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>

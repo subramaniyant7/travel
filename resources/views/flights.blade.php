@@ -40,6 +40,7 @@
                                                     {{ $flights_details->startpoint }} to {{ $flights_details->endpoint }}
                                                 </a>
                                                 <span class="text-light-dark">{{ $flights_details->flight_name}}</span>
+                                                <span class="text-light-dark">Departure : {{ getFormatedDate($flights_details->flight_date) }}</span>
                                             </h4>
                                         </div>
                                     </div>
@@ -48,8 +49,18 @@
                                     </div>
                                 </div>
                                 <div class="action">
-                                    <a class="btn-second btn-small" href="{{ url('/flight_details/'.$flights_details->flight_id) }}" tabindex="-1">View</a>
-                                    <a class="btn-first btn-submit" href="{{ url('/flight_book/'.$flights_details->flight_id) }}" tabindex="-1">Book</a>
+                                    <a class="btn-second btn-small" href="#" tabindex="-1">View</a>
+                                    <form action="{{ url('/booking') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="flight_id" value="{{ $flights_details->flight_id }}">
+                                        <input type="hidden" name="flight_from" value="{{ $flights_details->flight_from }}">
+                                        <input type="hidden" name="flight_to" value="{{ $flights_details->flight_to }}">
+                                        <input type="hidden" name="flight_depart" value="{{ getActualDate($flights_details->flight_date) }}">
+                                        <input type="hidden" name="flight_adult" value="1">
+                                        <input type="hidden" name="flight_kids" value="">
+                                        <input type="hidden" name="flight_infants" value="">
+                                        <button class="btn-first btn-submit" type="submit"> Book </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
